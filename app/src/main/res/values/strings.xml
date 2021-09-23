@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BootCampWeek4</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="free_registration">Ücretsiz Üye Ol</string>
+    <string name="havent_registered_yet">Üye değil misin?</string>
+    <string name="login_title">Giriş Yapın</string>
+    <string name="remember_me">Beni Hatırla</string>
+</resources>

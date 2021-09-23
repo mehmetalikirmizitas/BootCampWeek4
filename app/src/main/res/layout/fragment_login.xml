@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.loginScreen.LoginFragment">
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_start"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/view_margin_xlarge"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_end"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/view_margin_xlarge"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="140dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="@dimen/view_logo_top_margin"
+        android:src="@drawable/ic_splash_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="58dp" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textview_free_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_margin_xxlarge"
+        android:text="@string/free_registration"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_xlarge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textview_non_register_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_margin_medium"
+        android:text="@string/havent_registered_yet"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textview_free_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/button_google_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_margin_xxlarge"
+        android:src="@drawable/ic_google_login"
+        app:layout_constraintBottom_toTopOf="@id/textview_non_register_title"
+        app:layout_constraintEnd_toStartOf="@id/button_facebook_login"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/button_facebook_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/view_margin_medium"
+        android:layout_marginEnd="@dimen/view_margin_medium"
+        android:layout_marginBottom="@dimen/view_margin_xxlarge"
+        android:src="@drawable/ic_facebook_login"
+        app:layout_constraintBottom_toTopOf="@id/textview_non_register_title"
+        app:layout_constraintEnd_toStartOf="@id/button_apple_login"
+        app:layout_constraintStart_toEndOf="@id/button_google_login" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/button_apple_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/view_margin_xxlarge"
+        android:src="@drawable/ic_apple_login"
+        app:layout_constraintBottom_toTopOf="@id/textview_non_register_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_facebook_login" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_login"
+        style="@style/ButtonPinkTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="@dimen/view_margin_large"
+        android:text="@string/login_title"
+        app:layout_constraintBottom_toTopOf="@id/button_facebook_login"
+        app:layout_constraintEnd_toEndOf="@id/guide_end"
+        app:layout_constraintStart_toStartOf="@id/guide_start" />
+
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/checkbox_remember_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintBottom_toTopOf="@id/button_login"
+        app:layout_constraintStart_toStartOf="@id/guide_start" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remember_me"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/checkbox_remember_me"
+        app:layout_constraintStart_toEndOf="@id/checkbox_remember_me"
+        app:layout_constraintTop_toTopOf="@id/checkbox_remember_me" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Şifremi Unuttum"
+        app:layout_constraintBottom_toTopOf="@id/button_login"
+        app:layout_constraintEnd_toEndOf="@id/guide_end"
+        app:layout_constraintTop_toTopOf="@id/checkbox_remember_me" />
+
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edittext_password"
+        android:background="@drawable/rounded_edit_text_bg"
+        android:layout_width="0dp"
+        android:paddingStart="20dp"
+        android:layout_height="@dimen/edittext_default_height"
+        android:layout_marginBottom="@dimen/view_margin_large"
+        android:hint="Şifre"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@id/checkbox_remember_me"
+        app:layout_constraintEnd_toEndOf="@id/guide_end"
+        app:layout_constraintStart_toStartOf="@id/guide_start" />
+
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edittext_email"
+        android:background="@drawable/rounded_edit_text_bg"
+        android:layout_width="0dp"
+        android:paddingStart="20dp"
+        android:layout_height="@dimen/edittext_default_height"
+        android:layout_marginBottom="@dimen/view_margin_large"
+        android:hint="E-posta adresiniz"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@id/edittext_password"
+        app:layout_constraintEnd_toEndOf="@id/guide_end"
+        app:layout_constraintStart_toStartOf="@id/guide_start" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/view_margin_medium"
+        android:layout_marginBottom="@dimen/view_margin_medium"
+        android:text="Giriş Yapın"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/edittext_email"
+        app:layout_constraintStart_toStartOf="@id/guide_start" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
