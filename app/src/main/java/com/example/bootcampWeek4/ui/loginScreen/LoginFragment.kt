@@ -46,7 +46,6 @@ class LoginFragment : Fragment() {
                 saveDataAsString(USER_TOKEN,data.token)
                 findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
-
             override fun onFailure() {
                 super.onFailure()
             }

@@ -33,7 +33,6 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
         holder.binding.completeButton.setOnClickListener {
-            Log.e("Tıklandı", "complete button")
             updateListener.let {
                 updateListener?.onClickComplete(position)
             }

@@ -4,15 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/splash_screen_bg"
     tools:context=".SplashActivity">
-    <ProgressBar
+
+    <com.airbnb.lottie.LottieAnimationView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:indeterminateTint="@color/white"
-        android:indeterminate="true"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:lottie_autoPlay="true"
+        android:id="@+id/lottie"
+        app:lottie_rawRes="@raw/to_do_list_animation"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

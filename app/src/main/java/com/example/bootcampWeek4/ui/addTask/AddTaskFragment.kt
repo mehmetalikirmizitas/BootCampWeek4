@@ -16,7 +16,6 @@ import android.content.DialogInterface
 import android.view.inputmethod.InputMethodManager
 import com.example.bootcampWeek4.utils.hideKeyboard
 
-
 class AddTaskFragment : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetBinding? = null
