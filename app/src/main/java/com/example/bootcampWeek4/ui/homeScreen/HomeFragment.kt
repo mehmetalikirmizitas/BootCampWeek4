@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bootcampWeek4.base.BaseCallBack
 import com.example.bootcampWeek4.databinding.FragmentHomeBinding
+import com.example.bootcampWeek4.model.CompletedTaskRequest
 import com.example.bootcampWeek4.model.Task
 import com.example.bootcampWeek4.response.TaskResponse
 import com.example.bootcampWeek4.service.ServiceConnector
@@ -17,7 +18,7 @@ import com.example.bootcampWeek4.utils.gone
 import com.example.bootcampWeek4.utils.toast
 import com.example.bootcampWeek4.utils.visible
 
-class HomeFragment : Fragment(),ITaskOnClickDelete,ITaskOnClickComplete{
+class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -38,7 +39,7 @@ class HomeFragment : Fragment(),ITaskOnClickDelete,ITaskOnClickComplete{
         taskList = arrayListOf()
         binding.taskRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        homeAdapter.addListener(this,this)
+        homeAdapter.addListener(this, this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +47,7 @@ class HomeFragment : Fragment(),ITaskOnClickDelete,ITaskOnClickComplete{
     }
 
     private fun getAllTask() {
-        ServiceConnector.restInterface.getAllTask().enqueue(object : BaseCallBack<TaskResponse>(){
+        ServiceConnector.restInterface.getAllTask().enqueue(object : BaseCallBack<TaskResponse>() {
             @SuppressLint("NotifyDataSetChanged")
             override fun onSuccess(data: TaskResponse) {
                 super.onSuccess(data)
@@ -64,28 +65,34 @@ class HomeFragment : Fragment(),ITaskOnClickDelete,ITaskOnClickComplete{
             }
         })
     }
-    private fun deleteTask(position: Int){
-        ServiceConnector.restInterface.deleteTaskById(taskList[position]._id).enqueue(object : BaseCallBack<Task>(){
-            override fun onSuccess(data: Task) {
-                super.onSuccess(data)
-                    taskList.remove(taskList[position])
-                homeAdapter.setData(taskList)
-            }
-        })
-    }
-    private fun completeTask(position: Int) {
-        ServiceConnector.restInterface.updateTaskById(taskList[position]._id).enqueue(object : BaseCallBack<Task>(){
-            override fun onSuccess(data: Task) {
-                super.onSuccess(data)
-                taskList[position].completed = data.completed
-                Log.e("updated Success","${data.completed}")
-                homeAdapter.setData(taskList)
 
+    private fun deleteTask(position: Int) {
+        ServiceConnector.restInterface.deleteTaskById(taskList[position]._id)
+            .enqueue(object : BaseCallBack<Task>() {
+                override fun onSuccess(data: Task) {
+                    super.onSuccess(data)
+                    taskList.remove(taskList[position])
+                    homeAdapter.setData(taskList)
+                }
+            })
+    }
+
+    private fun completeTask(position: Int) {
+
+        ServiceConnector.restInterface.updateTaskById(
+            taskList[position]._id,
+            CompletedTaskRequest(!taskList[position].completed)
+        ).enqueue(object : BaseCallBack<Task>() {
+            override fun onSuccess(data: Task) {
+                super.onSuccess(data)
+                taskList[position].completed = !taskList[position].completed
+                Log.e("updated Success", "${data.completed}")
+                homeAdapter.setData(taskList)
             }
 
             override fun onFailure() {
                 super.onFailure()
-                Log.e("updated Failed","asd")
+                Log.e("updated Failed", "asd")
             }
         })
     }

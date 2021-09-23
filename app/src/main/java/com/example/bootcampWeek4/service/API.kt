@@ -1,5 +1,6 @@
 package com.example.bootcampWeek4.service
 
+import com.example.bootcampWeek4.model.CompletedTaskRequest
 import com.example.bootcampWeek4.model.Task
 import com.example.bootcampWeek4.model.User
 import com.example.bootcampWeek4.response.LoginResponse
@@ -25,6 +26,6 @@ interface API {
     fun deleteTaskById(@Path("id") id: String): Call<Task>
 
     @PUT("task/{id}")
-    fun updateTaskById(@Path("id") id: String): Call<Task>
+    fun updateTaskById(@Path("id") id: String,@Body completed : CompletedTaskRequest): Call<Task>
 
 }
