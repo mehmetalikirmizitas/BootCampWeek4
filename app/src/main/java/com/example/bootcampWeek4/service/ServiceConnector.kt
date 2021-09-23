@@ -17,6 +17,7 @@ class ServiceConnector {
         lateinit var restInterface: API
 
         fun init() {
+
             val logging = HttpLoggingInterceptor().apply {
                 setLevel(HttpLoggingInterceptor.Level.BODY)
             }
