@@ -1,7 +1,6 @@
 package com.example.bootcampWeek4.ui.homeScreen
 
 import android.annotation.SuppressLint
-import android.media.SoundPool
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,8 +11,8 @@ import com.example.bootcampWeek4.model.Task
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     private lateinit var taskList: ArrayList<Task>
-    private var deleteListener : ITaskOnClickDelete ?= null
-    private var updateListener : ITaskOnClickComplete ?= null
+    private var deleteListener: ITaskOnClickDelete? = null
+    private var updateListener: ITaskOnClickComplete? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -34,11 +33,12 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
         holder.binding.completeButton.setOnClickListener {
-            Log.e("Tıklandı","complete button")
+            Log.e("Tıklandı", "complete button")
             updateListener.let {
                 updateListener?.onClickComplete(position)
             }
             notifyDataSetChanged()
+            holder.binding.swipeLayout.animateReset()
         }
     }
 
@@ -47,12 +47,14 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
         this.taskList = list
         notifyDataSetChanged()
     }
-    fun addListener(deleteListener : ITaskOnClickDelete,completeListener: ITaskOnClickComplete){
+
+    fun addListener(deleteListener: ITaskOnClickDelete, completeListener: ITaskOnClickComplete) {
         this.deleteListener = deleteListener
         this.updateListener = completeListener
     }
 
     override fun getItemCount(): Int = taskList.size
 
-    inner class ViewHolder(val binding: RecyclerViewItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: RecyclerViewItemBinding) :
+        RecyclerView.ViewHolder(binding.root)
 }

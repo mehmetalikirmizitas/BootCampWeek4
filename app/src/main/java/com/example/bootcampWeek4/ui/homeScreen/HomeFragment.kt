@@ -6,19 +6,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.bootcampWeek4.R
 import com.example.bootcampWeek4.base.BaseCallBack
 import com.example.bootcampWeek4.databinding.FragmentHomeBinding
 import com.example.bootcampWeek4.model.CompletedTaskRequest
 import com.example.bootcampWeek4.model.Task
 import com.example.bootcampWeek4.response.TaskResponse
 import com.example.bootcampWeek4.service.ServiceConnector
+import com.example.bootcampWeek4.ui.addTask.AddTaskFragment
+import com.example.bootcampWeek4.ui.addTask.IAddTask
 import com.example.bootcampWeek4.utils.gone
 import com.example.bootcampWeek4.utils.toast
 import com.example.bootcampWeek4.utils.visible
 
-class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete {
+class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTask {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -29,7 +33,7 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         initViews()
         return binding.root
@@ -44,6 +48,15 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         getAllTask()
+        onClickListener()
+    }
+
+    private fun onClickListener() {
+        val addTaskFragment = AddTaskFragment()
+        addTaskFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.ThemeOverlay_Demo_BottomSheetDialog)
+        binding.fabHomeFragment.setOnClickListener {
+            addTaskFragment.show(requireActivity().supportFragmentManager,"BottomSheetDialog")
+        }
     }
 
     private fun getAllTask() {
@@ -79,13 +92,13 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete {
 
     private fun completeTask(position: Int) {
 
+        taskList[position].completed = !taskList[position].completed
         ServiceConnector.restInterface.updateTaskById(
             taskList[position]._id,
             CompletedTaskRequest(!taskList[position].completed)
         ).enqueue(object : BaseCallBack<Task>() {
             override fun onSuccess(data: Task) {
                 super.onSuccess(data)
-                taskList[position].completed = !taskList[position].completed
                 Log.e("updated Success", "${data.completed}")
                 homeAdapter.setData(taskList)
             }
@@ -108,5 +121,14 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete {
 
     override fun onClickComplete(position: Int) {
         completeTask(position)
+    }
+
+    override fun updateItemList(task: Task) {
+        updateItems(task)
+    }
+
+    private fun updateItems(task: Task) {
+        taskList.add(task)
+        homeAdapter.setData(taskList)
     }
 }

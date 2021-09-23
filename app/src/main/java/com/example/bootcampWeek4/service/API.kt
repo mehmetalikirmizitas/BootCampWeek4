@@ -2,6 +2,7 @@ package com.example.bootcampWeek4.service
 
 import com.example.bootcampWeek4.model.CompletedTaskRequest
 import com.example.bootcampWeek4.model.Task
+import com.example.bootcampWeek4.model.TaskRequest
 import com.example.bootcampWeek4.model.User
 import com.example.bootcampWeek4.response.LoginResponse
 import com.example.bootcampWeek4.response.TaskResponse
@@ -17,7 +18,7 @@ interface API {
     fun getUserLoginInfo(): Call<User>
 
     @POST("task")
-    fun addNewTask(@Body params: String): Call<Task>
+    fun addNewTask(@Body params: TaskRequest): Call<Task>
 
     @GET("task")
     fun getAllTask(): Call<TaskResponse>
