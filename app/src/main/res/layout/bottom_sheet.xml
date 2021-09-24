@@ -1,53 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/view_margin_xxlarge"
     android:fitsSystemWindows="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:paddingBottom="@dimen/default_padding_xxlarge">
+
     <View
+        android:id="@+id/line"
         android:layout_width="100dp"
         android:layout_height="2dp"
+        android:layout_marginTop="@dimen/default_margin_xsmall"
         android:background="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/line"
-        android:layout_marginTop="@dimen/view_margin_medium"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/add_task_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/textsize_large"
-        android:text="Task Ekle"
-        android:id="@+id/add_task"
-        app:layout_constraintTop_toBottomOf="@id/line"
+        android:layout_marginTop="@dimen/default_margin_medium"
+        android:text="@string/add_task"
+        android:textSize="@dimen/default_text_size_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="@dimen/view_margin_large"/>
+        app:layout_constraintTop_toBottomOf="@id/line" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/edittext_default_height"
-        android:paddingStart="@dimen/edittext_default_padding"
-        android:layout_marginTop="@dimen/view_margin_xlarge"
-        android:hint="Task açıklaması"
         android:id="@+id/task_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_edit_text_height"
+        android:layout_marginHorizontal="@dimen/default_margin_medium"
+        android:layout_marginTop="@dimen/default_margin_large"
         android:background="@drawable/rounded_edit_text_bg"
-        app:layout_constraintTop_toBottomOf="@id/add_task"
-        app:layout_constraintStart_toStartOf="parent"
+        android:hint="@string/task_description"
+        android:paddingStart="@dimen/default_padding_small"
+        android:paddingEnd="@dimen/default_padding_small"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="@dimen/view_margin_large"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_task_text" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        style="@style/ButtonPinkTextStyle"
-        android:text="Ekle"
         android:id="@+id/add_task_button"
-        android:layout_marginTop="@dimen/view_margin_xxlarge"
-        android:layout_marginHorizontal="@dimen/view_margin_xxlarge"
-        app:layout_constraintTop_toBottomOf="@id/task_edit_text"
+        style="@style/ButtonPinkTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_card_view_height_medium"
+        android:layout_marginHorizontal="@dimen/default_margin_xlarge"
+        android:layout_marginTop="@dimen/default_margin_xlarge"
+        android:text="@string/add"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/task_edit_text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

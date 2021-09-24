@@ -5,28 +5,43 @@
     android:id="@+id/swipe_layout"
     style="@style/SwipeLayout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_height">
+    android:layout_height="@dimen/recycler_view_item_height">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
 
         <TextView
-            android:id="@+id/text_view_pos"
-            android:layout_width="72dp"
+            android:id="@+id/isCompleted"
+            android:layout_width="@dimen/recycler_view_completed_section_width"
             android:layout_height="match_parent"
             android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="#1" />
 
         <TextView
-            style="@style/CenterTextView"
             android:id="@+id/taskDescription"
+            style="@style/CenterTextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Only Left" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/isCompleted"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Only Left" />
 
-    </LinearLayout>
+        <View
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_separator_height"
+            android:layout_marginStart="@dimen/default_margin_xxlarge"
+            android:background="@color/separator_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--LEFT-->
     <LinearLayout
@@ -41,21 +56,22 @@
         app:sticky_sensitivity="0.5">
 
         <TextView
-            android:background="#f00"
-            style="@style/LeftTextView"
             android:id="@+id/deleteButton"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:text="Sil"
-            android:textSize="12dp" />
-        <TextView
             style="@style/LeftTextView"
-            android:id="@+id/completeButton"
-            android:layout_width="100dp"
+            android:layout_width="@dimen/recycler_view_left_items_width"
             android:layout_height="match_parent"
-            android:background="#00f"
-            android:text="Tamamla" />
+            android:background="@color/left_view_delete_color"
+            android:text="@string/delete"
+            android:textSize="@dimen/default_text_size_xsmall" />
 
+        <TextView
+            android:id="@+id/completeButton"
+            style="@style/LeftTextView"
+            android:layout_width="@dimen/recycler_view_left_items_width"
+            android:layout_height="match_parent"
+            android:background="@color/left_view_complete_color"
+            android:text="@string/complete"
+            android:textSize="@dimen/default_text_size_xsmall" />
 
     </LinearLayout>
 </ru.rambler.libs.swipe_layout.SwipeLayout>
