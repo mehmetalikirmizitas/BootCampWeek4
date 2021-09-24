@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bootcampWeek4.R
 import com.example.bootcampWeek4.base.BaseCallBack
@@ -34,6 +35,7 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        //AddTaskFragment().addListener(this)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         initViews()
         return binding.root
@@ -41,6 +43,7 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
 
     private fun initViews() {
         taskList = arrayListOf()
+        binding.taskRecyclerView.addItemDecoration(DividerItemDecoration(context,0))
         binding.taskRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         homeAdapter.addListener(this, this)

@@ -43,6 +43,7 @@ class SplashActivity : AppCompatActivity() {
                         Timer().schedule(object : TimerTask() {
                             override fun run() {
                                 startActivity(intent)
+                                finish()
                             }
                         }, 2000)
                     }
@@ -50,7 +51,7 @@ class SplashActivity : AppCompatActivity() {
                     override fun onFailure() {
                         super.onFailure()
                         toast("Bir hata oluştu lütfen tekrar giriş yapınız")
-                        startActivity(intent)
+                        finish()
                     }
                 })
         } else

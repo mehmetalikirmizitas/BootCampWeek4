@@ -14,6 +14,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import android.app.Activity
 import android.content.DialogInterface
 import android.view.inputmethod.InputMethodManager
+import androidx.navigation.fragment.findNavController
+import com.example.bootcampWeek4.R
 import com.example.bootcampWeek4.utils.hideKeyboard
 
 class AddTaskFragment : BottomSheetDialogFragment() {
@@ -53,6 +55,7 @@ class AddTaskFragment : BottomSheetDialogFragment() {
                     }
                     hideKeyboard()
                     dismiss()
+                    findNavController().navigate(R.id.action_homeFragment_self)
                 }
             })
     }

@@ -1,7 +1,6 @@
 package com.example.bootcampWeek4.ui.homeScreen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -24,9 +23,10 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val task: Task = taskList[position]
         holder.binding.taskDescription.text = task.description
-        holder.binding.textViewPos.text = taskList[position].completed.toString()
+        holder.binding.isCompleted.text = taskList[position].completed.toString()
 
         holder.binding.deleteButton.setOnClickListener {
+            holder.binding.swipeLayout.animateReset()
             deleteListener.let {
                 deleteListener?.onClickDelete(position)
             }

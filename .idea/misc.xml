@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/drawable/ic_applelogin.xml" value="0.2712820512820513" />
+        <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/drawable/ic_delete.xml" value="0.15" />
+        <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/drawable/ic_mark_as_complete.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/drawable/ic_markascomplete.xml" value="0.15" />
         <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/drawable/ic_splash_logo.xml" value="0.2712820512820513" />
         <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/drawable/rounded_dialog.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/drawable/rounded_edit_text_bg.xml" value="0.2712820512820513" />
@@ -11,9 +14,9 @@
         <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/layout/activity_main.xml" value="0.259375" />
         <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/layout/activity_splash.xml" value="0.2" />
         <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/layout/bottom_sheet.xml" value="0.2" />
-        <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/layout/fragment_home.xml" value="0.152" />
+        <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/layout/fragment_home.xml" value="0.8" />
         <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/layout/fragment_login.xml" value="0.2" />
-        <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/layout/recycler_view_item.xml" value="0.264" />
+        <entry key="..\:/Users/malikirmizitas/Documents/GitHub/BootCampWeek4/app/src/main/res/layout/recycler_view_item.xml" value="0.43114543114543114" />
       </map>
     </option>
   </component>
