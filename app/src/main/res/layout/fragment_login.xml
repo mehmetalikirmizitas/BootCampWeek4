@@ -105,9 +105,11 @@
         android:layout_height="@dimen/default_card_view_height_medium"
         android:layout_marginBottom="@dimen/default_margin_medium"
         android:text="@string/login_title"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/button_facebook_login"
         app:layout_constraintEnd_toEndOf="@id/guide_end"
         app:layout_constraintStart_toStartOf="@id/guide_start" />
+
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/button_google_login"

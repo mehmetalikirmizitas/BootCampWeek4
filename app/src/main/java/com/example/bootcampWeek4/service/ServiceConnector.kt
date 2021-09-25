@@ -1,8 +1,6 @@
 package com.example.bootcampWeek4.service
 
-import android.util.Log
 import com.example.bootcampWeek4.model.User
-import com.example.bootcampWeek4.response.LoginResponse
 import com.example.bootcampWeek4.utils.BASE_URL
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

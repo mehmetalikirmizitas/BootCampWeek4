@@ -54,8 +54,14 @@ class SplashActivity : AppCompatActivity() {
                         finish()
                     }
                 })
-        } else
-            startActivity(intent)
+        } else{
+            Timer().schedule(object : TimerTask() {
+                override fun run() {
+                    startActivity(intent)
+                    finish()
+                }
+            }, 2000)
+        }
     }
 
     /**

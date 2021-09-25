@@ -24,14 +24,14 @@ import com.example.bootcampWeek4.utils.gone
 import com.example.bootcampWeek4.utils.toast
 import com.example.bootcampWeek4.utils.visible
 
-class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTask {
+class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete, IAddTask {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    val limit = 5
+    val limit = 10
     var skip = 0
 
-    private var homeAdapter: HomeAdapter ?= null
+    private var homeAdapter: HomeAdapter? = null
     private lateinit var taskList: ArrayList<Task>
 
     override fun onCreateView(
@@ -39,7 +39,6 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        //AddTaskFragment().addListener(this)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         initViews()
         return binding.root
@@ -47,67 +46,92 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
 
     private fun initViews() {
         taskList = arrayListOf()
-        binding.taskRecyclerView.addItemDecoration(DividerItemDecoration(context,0))
+        binding.taskRecyclerView.addItemDecoration(DividerItemDecoration(context, 0))
         binding.taskRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        homeAdapter?.addListener(this, this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         getAllTask(limit, skip)
-        onClickListener()
-        binding.taskRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        fabOnClickListener()
+        recyclerViewOnScrollListener()
+    }
+
+    private fun recyclerViewOnScrollListener() {
+
+        binding.taskRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+
                 super.onScrollStateChanged(recyclerView, newState)
+
                 if (!binding.taskRecyclerView.canScrollVertically(1) &&
-                    newState==RecyclerView.SCROLL_STATE_IDLE){
-                    skip+=limit
+                    newState == RecyclerView.SCROLL_STATE_IDLE
+                ) {
+
+                    skip += limit
                     binding.progressCircularHomeFragment.visible()
-                    getAllTask(limit,skip)
+                    getAllTask(limit, skip)
                 }
             }
         })
     }
 
-    private fun onClickListener() {
+    private fun fabOnClickListener() {
+
         val addTaskFragment = AddTaskFragment()
-        addTaskFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.ThemeOverlay_Demo_BottomSheetDialog)
+
+        addTaskFragment.setStyle(
+            DialogFragment.STYLE_NORMAL,
+            R.style.ThemeOverlay_Demo_BottomSheetDialog
+        )
+
         binding.fabHomeFragment.setOnClickListener {
-            addTaskFragment.show(requireActivity().supportFragmentManager,"BottomSheetDialog")
+            addTaskFragment.show(requireActivity().supportFragmentManager, "BottomSheetDialog")
         }
     }
 
-    private fun getAllTask(limit : Int,skip: Int) {
-        ServiceConnector.restInterface.getTaskByPagination(limit, skip).enqueue(object : BaseCallBack<TaskResponse>() {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onSuccess(data: TaskResponse) {
-                super.onSuccess(data)
-                //homeAdapter.setData(data.task)
-                //taskList = data.task
-                taskList.addAll(data.task)
+    private fun getAllTask(limit: Int, skip: Int) {
 
-                if(homeAdapter == null){
-                    homeAdapter = HomeAdapter()
-                    homeAdapter!!.setData(taskList)
-                    binding.taskRecyclerView.adapter = homeAdapter
-                }
-                else {
-                    binding.taskRecyclerView.adapter?.notifyDataSetChanged()
-                }
-                AddTaskFragment().addListener(this@HomeFragment)
-                binding.fabHomeFragment.visible()
-                binding.taskRecyclerView.visible()
-                binding.progressCircularHomeFragment.gone()
-            }
+        ServiceConnector.restInterface.getTaskByPagination(limit, skip)
+            .enqueue(object : BaseCallBack<TaskResponse>() {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onSuccess(data: TaskResponse) {
+                    super.onSuccess(data)
 
-            override fun onFailure() {
-                super.onFailure()
-                toast("GetAllTask is not running")
-            }
-        })
+                    if (data.count == 0 && homeAdapter != null)
+                        toast("Can't scroll anymore you are in end of list")
+
+                    if (data.count == 0 && homeAdapter == null) {
+                        binding.noTaskString.visible()
+                        binding.taskRecyclerView.gone()
+                    }
+                    taskList.addAll(data.task)
+
+                    if (homeAdapter == null) {
+                        homeAdapter = HomeAdapter()
+                        homeAdapter!!.setData(taskList)
+                        binding.taskRecyclerView.adapter = homeAdapter
+                    } else {
+                        binding.taskRecyclerView.adapter?.notifyDataSetChanged()
+                    }
+
+                    homeAdapter?.addListener(this@HomeFragment, this@HomeFragment)
+                    AddTaskFragment().addListener(this@HomeFragment)
+                    binding.fabHomeFragment.visible()
+                    binding.taskRecyclerView.visible()
+                    binding.progressCircularHomeFragment.gone()
+                }
+
+                override fun onFailure() {
+                    super.onFailure()
+                    toast("GetAllTask is not running")
+                }
+            })
     }
 
     private fun deleteTask(position: Int) {
+        homeAdapter = HomeAdapter()
         ServiceConnector.restInterface.deleteTaskById(taskList[position]._id)
             .enqueue(object : BaseCallBack<Task>() {
                 override fun onSuccess(data: Task) {
@@ -120,11 +144,14 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
 
     private fun completeTask(position: Int) {
 
+        homeAdapter = HomeAdapter()
+
         taskList[position].completed = !taskList[position].completed
         ServiceConnector.restInterface.updateTaskById(
             taskList[position]._id,
             CompletedTaskRequest(!taskList[position].completed)
         ).enqueue(object : BaseCallBack<Task>() {
+
             override fun onSuccess(data: Task) {
                 super.onSuccess(data)
                 homeAdapter?.setData(taskList)
@@ -132,9 +159,14 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
 
             override fun onFailure() {
                 super.onFailure()
-                Log.e("updated Failed", "asd")
+                Log.e("updated Failed", " ")
             }
         })
+    }
+
+    private fun updateItems(task: Task) {
+        taskList.add(task)
+        homeAdapter?.setData(taskList)
     }
 
     override fun onDestroyView() {
@@ -154,8 +186,5 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
         updateItems(task)
     }
 
-    private fun updateItems(task: Task) {
-        taskList.add(task)
-        homeAdapter?.setData(taskList)
-    }
+
 }

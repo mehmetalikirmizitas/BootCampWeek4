@@ -1,11 +1,15 @@
 package com.example.bootcampWeek4.ui.homeScreen
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bootcampWeek4.databinding.RecyclerViewItemBinding
 import com.example.bootcampWeek4.model.Task
+import kotlin.coroutines.coroutineContext
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
@@ -27,16 +31,18 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
         holder.binding.deleteButton.setOnClickListener {
             holder.binding.swipeLayout.animateReset()
+            Log.e("Tıklandı delete","$task")
             deleteListener.let {
                 deleteListener?.onClickDelete(position)
             }
-            notifyDataSetChanged()
+            notifyItemRemoved(position)
         }
         holder.binding.completeButton.setOnClickListener {
+            Log.e("Tıklandı update","$task")
             updateListener.let {
                 updateListener?.onClickComplete(position)
             }
-            notifyDataSetChanged()
+            notifyItemChanged(position)
             holder.binding.swipeLayout.animateReset()
         }
     }

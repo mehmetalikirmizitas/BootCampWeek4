@@ -10,10 +10,9 @@ import com.example.bootcampWeek4.R
 import com.example.bootcampWeek4.base.BaseCallBack
 import com.example.bootcampWeek4.response.LoginResponse
 import com.example.bootcampWeek4.service.ServiceConnector
-import com.example.bootcampWeek4.utils.USER_TOKEN
-import com.example.bootcampWeek4.utils.getString
-import com.example.bootcampWeek4.utils.saveDataAsString
+import com.example.bootcampWeek4.utils.*
 import kotlinx.android.synthetic.main.fragment_login.*
+import java.util.*
 
 class LoginFragment : Fragment() {
 
@@ -45,9 +44,6 @@ class LoginFragment : Fragment() {
                 super.onSuccess(data)
                 saveDataAsString(USER_TOKEN,data.token)
                 findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-            }
-            override fun onFailure() {
-                super.onFailure()
             }
         })
     }
