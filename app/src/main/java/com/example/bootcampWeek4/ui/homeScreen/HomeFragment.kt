@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.bootcampWeek4.R
 import com.example.bootcampWeek4.base.BaseCallBack
 import com.example.bootcampWeek4.databinding.FragmentHomeBinding
@@ -27,7 +28,10 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private var homeAdapter: HomeAdapter = HomeAdapter()
+    val limit = 5
+    var skip = 0
+
+    private var homeAdapter: HomeAdapter ?= null
     private lateinit var taskList: ArrayList<Task>
 
     override fun onCreateView(
@@ -46,12 +50,23 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
         binding.taskRecyclerView.addItemDecoration(DividerItemDecoration(context,0))
         binding.taskRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        homeAdapter.addListener(this, this)
+        homeAdapter?.addListener(this, this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        getAllTask()
+        getAllTask(limit, skip)
         onClickListener()
+        binding.taskRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!binding.taskRecyclerView.canScrollVertically(1) &&
+                    newState==RecyclerView.SCROLL_STATE_IDLE){
+                    skip+=limit
+                    binding.progressCircularHomeFragment.visible()
+                    getAllTask(limit,skip)
+                }
+            }
+        })
     }
 
     private fun onClickListener() {
@@ -62,14 +77,24 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
         }
     }
 
-    private fun getAllTask() {
-        ServiceConnector.restInterface.getAllTask().enqueue(object : BaseCallBack<TaskResponse>() {
+    private fun getAllTask(limit : Int,skip: Int) {
+        ServiceConnector.restInterface.getTaskByPagination(limit, skip).enqueue(object : BaseCallBack<TaskResponse>() {
             @SuppressLint("NotifyDataSetChanged")
             override fun onSuccess(data: TaskResponse) {
                 super.onSuccess(data)
-                homeAdapter.setData(data.task)
-                taskList = data.task
-                binding.taskRecyclerView.adapter = homeAdapter
+                //homeAdapter.setData(data.task)
+                //taskList = data.task
+                taskList.addAll(data.task)
+
+                if(homeAdapter == null){
+                    homeAdapter = HomeAdapter()
+                    homeAdapter!!.setData(taskList)
+                    binding.taskRecyclerView.adapter = homeAdapter
+                }
+                else {
+                    binding.taskRecyclerView.adapter?.notifyDataSetChanged()
+                }
+                AddTaskFragment().addListener(this@HomeFragment)
                 binding.fabHomeFragment.visible()
                 binding.taskRecyclerView.visible()
                 binding.progressCircularHomeFragment.gone()
@@ -88,7 +113,7 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
                 override fun onSuccess(data: Task) {
                     super.onSuccess(data)
                     taskList.remove(taskList[position])
-                    homeAdapter.setData(taskList)
+                    homeAdapter?.setData(taskList)
                 }
             })
     }
@@ -102,8 +127,7 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
         ).enqueue(object : BaseCallBack<Task>() {
             override fun onSuccess(data: Task) {
                 super.onSuccess(data)
-                Log.e("updated Success", "${data.completed}")
-                homeAdapter.setData(taskList)
+                homeAdapter?.setData(taskList)
             }
 
             override fun onFailure() {
@@ -132,6 +156,6 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete,IAddTa
 
     private fun updateItems(task: Task) {
         taskList.add(task)
-        homeAdapter.setData(taskList)
+        homeAdapter?.setData(taskList)
     }
 }

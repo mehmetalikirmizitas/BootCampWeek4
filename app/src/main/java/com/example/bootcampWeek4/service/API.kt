@@ -20,8 +20,11 @@ interface API {
     @POST("task")
     fun addNewTask(@Body params: TaskRequest): Call<Task>
 
-    @GET("task")
+    @GET("task?limit=10&skip=0")
     fun getAllTask(): Call<TaskResponse>
+
+    @GET("task")
+    fun getTaskByPagination(@Query("limit") limit : Int, @Query("skip") skip:Int) : Call<TaskResponse>
 
     @DELETE("task/{id}")
     fun deleteTaskById(@Path("id") id: String): Call<Task>

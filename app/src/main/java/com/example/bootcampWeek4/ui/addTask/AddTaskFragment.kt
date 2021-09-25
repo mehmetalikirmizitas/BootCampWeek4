@@ -55,7 +55,6 @@ class AddTaskFragment : BottomSheetDialogFragment() {
                     }
                     hideKeyboard()
                     dismiss()
-                    findNavController().navigate(R.id.action_homeFragment_self)
                 }
             })
     }
