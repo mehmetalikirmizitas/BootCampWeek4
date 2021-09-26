@@ -19,12 +19,11 @@ import com.example.bootcampWeek4.model.Task
 import com.example.bootcampWeek4.response.TaskResponse
 import com.example.bootcampWeek4.service.ServiceConnector
 import com.example.bootcampWeek4.ui.addTask.AddTaskFragment
-import com.example.bootcampWeek4.ui.addTask.IAddTask
 import com.example.bootcampWeek4.utils.gone
 import com.example.bootcampWeek4.utils.toast
 import com.example.bootcampWeek4.utils.visible
 
-class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete, IAddTask {
+class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -44,6 +43,7 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete, IAddT
         return binding.root
     }
 
+    //binding arguments
     private fun initViews() {
         taskList = arrayListOf()
         binding.taskRecyclerView.addItemDecoration(DividerItemDecoration(context, 0))
@@ -54,9 +54,11 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete, IAddT
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         getAllTask(limit, skip)
         fabOnClickListener()
+        binding.taskRecyclerView.gone()
         recyclerViewOnScrollListener()
     }
 
+    //Scroll Listener for pagination
     private fun recyclerViewOnScrollListener() {
 
         binding.taskRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -66,17 +68,15 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete, IAddT
                 super.onScrollStateChanged(recyclerView, newState)
 
                 if (!binding.taskRecyclerView.canScrollVertically(1) &&
-                    newState == RecyclerView.SCROLL_STATE_IDLE
+                    newState == RecyclerView.SCROLL_STATE_IDLE && taskList.size > 0
                 ) {
-
-                    skip += limit
-                    binding.progressCircularHomeFragment.visible()
                     getAllTask(limit, skip)
                 }
             }
         })
     }
 
+    //adding task with floating action button
     private fun fabOnClickListener() {
 
         val addTaskFragment = AddTaskFragment()
@@ -91,6 +91,7 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete, IAddT
         }
     }
 
+    //getAllTask with pagination
     private fun getAllTask(limit: Int, skip: Int) {
 
         ServiceConnector.restInterface.getTaskByPagination(limit, skip)
@@ -108,17 +109,16 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete, IAddT
                     }
                     taskList.addAll(data.task)
 
-                    if (homeAdapter == null) {
+                    if (homeAdapter == null && data.count != 0) {
                         homeAdapter = HomeAdapter()
                         homeAdapter!!.setData(taskList)
                         binding.taskRecyclerView.adapter = homeAdapter
+
                     } else {
                         binding.taskRecyclerView.adapter?.notifyDataSetChanged()
                     }
-
+                    this@HomeFragment.skip = taskList.size
                     homeAdapter?.addListener(this@HomeFragment, this@HomeFragment)
-                    AddTaskFragment().addListener(this@HomeFragment)
-                    binding.fabHomeFragment.visible()
                     binding.taskRecyclerView.visible()
                     binding.progressCircularHomeFragment.gone()
                 }
@@ -132,26 +132,31 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete, IAddT
 
     private fun deleteTask(position: Int) {
         homeAdapter = HomeAdapter()
+        taskList.size
         ServiceConnector.restInterface.deleteTaskById(taskList[position]._id)
             .enqueue(object : BaseCallBack<Task>() {
                 override fun onSuccess(data: Task) {
                     super.onSuccess(data)
                     taskList.remove(taskList[position])
                     homeAdapter?.setData(taskList)
+                    homeAdapter?.notifyItemRemoved(position)
                 }
             })
+        getAllTask(0, skip)
     }
 
     private fun completeTask(position: Int) {
 
         homeAdapter = HomeAdapter()
 
+        val isCompleted = !taskList[position].completed
+
+
         taskList[position].completed = !taskList[position].completed
         ServiceConnector.restInterface.updateTaskById(
             taskList[position]._id,
-            CompletedTaskRequest(!taskList[position].completed)
+            CompletedTaskRequest(isCompleted)
         ).enqueue(object : BaseCallBack<Task>() {
-
             override fun onSuccess(data: Task) {
                 super.onSuccess(data)
                 homeAdapter?.setData(taskList)
@@ -162,11 +167,6 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete, IAddT
                 Log.e("updated Failed", " ")
             }
         })
-    }
-
-    private fun updateItems(task: Task) {
-        taskList.add(task)
-        homeAdapter?.setData(taskList)
     }
 
     override fun onDestroyView() {
@@ -181,10 +181,5 @@ class HomeFragment : Fragment(), ITaskOnClickDelete, ITaskOnClickComplete, IAddT
     override fun onClickComplete(position: Int) {
         completeTask(position)
     }
-
-    override fun updateItemList(task: Task) {
-        updateItems(task)
-    }
-
 
 }

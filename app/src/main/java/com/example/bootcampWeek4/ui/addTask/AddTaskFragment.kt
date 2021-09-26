@@ -4,25 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.example.bootcampWeek4.R
 import com.example.bootcampWeek4.base.BaseCallBack
 import com.example.bootcampWeek4.databinding.BottomSheetBinding
 import com.example.bootcampWeek4.model.Task
 import com.example.bootcampWeek4.model.TaskRequest
 import com.example.bootcampWeek4.service.ServiceConnector
+import com.example.bootcampWeek4.ui.homeScreen.HomeFragment
 import com.example.bootcampWeek4.utils.getString
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import android.app.Activity
-import android.content.DialogInterface
-import android.view.inputmethod.InputMethodManager
-import androidx.navigation.fragment.findNavController
-import com.example.bootcampWeek4.R
 import com.example.bootcampWeek4.utils.hideKeyboard
 
 class AddTaskFragment : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetBinding? = null
     private val binding get() = _binding!!
-    private var updateListener : IAddTask? = null
+    private var addListener : IAddTask? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,22 +42,21 @@ class AddTaskFragment : BottomSheetDialogFragment() {
         }
     }
 
+    //Add new Item function
     private fun addTask() {
         ServiceConnector.restInterface.addNewTask(TaskRequest(binding.taskEditText.getString()))
             .enqueue(object : BaseCallBack<Task>(){
                 override fun onSuccess(data: Task) {
                     super.onSuccess(data)
                     binding.taskEditText.text?.clear()
-                    updateListener.let {
-                        updateListener?.updateItemList(data)
-                    }
                     hideKeyboard()
                     dismiss()
+                    findNavController().navigate(R.id.action_homeFragment_self)
                 }
             })
     }
-    fun addListener(listener: IAddTask){
-        this.updateListener = listener
+    fun addListener(listener: IAddTask?){
+        this.addListener = listener
     }
 
     override fun onDestroyView() {

@@ -10,9 +10,10 @@ import com.example.bootcampWeek4.R
 import com.example.bootcampWeek4.base.BaseCallBack
 import com.example.bootcampWeek4.response.LoginResponse
 import com.example.bootcampWeek4.service.ServiceConnector
-import com.example.bootcampWeek4.utils.*
+import com.example.bootcampWeek4.utils.USER_TOKEN
+import com.example.bootcampWeek4.utils.getString
+import com.example.bootcampWeek4.utils.saveDataAsString
 import kotlinx.android.synthetic.main.fragment_login.*
-import java.util.*
 
 class LoginFragment : Fragment() {
 
@@ -21,7 +22,7 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_login,container,false)
+        return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,19 +33,20 @@ class LoginFragment : Fragment() {
     }
 
     private fun loginFunction() {
-        val email= edittext_email.getString()
+        val email = edittext_email.getString()
         val password = edittext_password.getString()
 
-        val params = mutableMapOf<String,Any>().apply {
-            put("email",email)
-            put("password",password)
+        val params = mutableMapOf<String, Any>().apply {
+            put("email", email)
+            put("password", password)
         }
-        ServiceConnector.restInterface.login(params).enqueue(object : BaseCallBack<LoginResponse>(){
-            override fun onSuccess(data: LoginResponse) {
-                super.onSuccess(data)
-                saveDataAsString(USER_TOKEN,data.token)
-                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-            }
-        })
+        ServiceConnector.restInterface.login(params)
+            .enqueue(object : BaseCallBack<LoginResponse>() {
+                override fun onSuccess(data: LoginResponse) {
+                    super.onSuccess(data)
+                    saveDataAsString(USER_TOKEN, data.token)
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                }
+            })
     }
 }

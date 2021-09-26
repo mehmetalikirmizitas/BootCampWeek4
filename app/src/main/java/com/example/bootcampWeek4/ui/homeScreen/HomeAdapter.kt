@@ -1,15 +1,12 @@
 package com.example.bootcampWeek4.ui.homeScreen
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bootcampWeek4.R
 import com.example.bootcampWeek4.databinding.RecyclerViewItemBinding
 import com.example.bootcampWeek4.model.Task
-import kotlin.coroutines.coroutineContext
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
@@ -27,18 +24,22 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val task: Task = taskList[position]
         holder.binding.taskDescription.text = task.description
-        holder.binding.isCompleted.text = taskList[position].completed.toString()
 
+        if (task.completed)
+            holder.binding.isCompleted.setImageResource(R.drawable.ic_completed)
+        else
+            holder.binding.isCompleted.setImageResource(R.drawable.ic_not_completed)
+
+        //Delete task
         holder.binding.deleteButton.setOnClickListener {
             holder.binding.swipeLayout.animateReset()
-            Log.e("Tıklandı delete","$task")
             deleteListener.let {
                 deleteListener?.onClickDelete(position)
             }
             notifyItemRemoved(position)
         }
+        //mark task as complete
         holder.binding.completeButton.setOnClickListener {
-            Log.e("Tıklandı update","$task")
             updateListener.let {
                 updateListener?.onClickComplete(position)
             }
