@@ -18,7 +18,7 @@ import com.example.bootcampWeek4.model.CompletedTaskRequest
 import com.example.bootcampWeek4.model.Task
 import com.example.bootcampWeek4.response.TaskResponse
 import com.example.bootcampWeek4.service.ServiceConnector
-import com.example.bootcampWeek4.ui.addTask.AddTaskFragment
+import com.example.bootcampWeek4.ui.AddTaskFragment
 import com.example.bootcampWeek4.utils.gone
 import com.example.bootcampWeek4.utils.toast
 import com.example.bootcampWeek4.utils.visible

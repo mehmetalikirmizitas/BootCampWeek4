@@ -1,5 +1,6 @@
 package com.example.bootcampWeek4.ui.loginScreen
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.bootcampWeek4.R
 import com.example.bootcampWeek4.base.BaseCallBack
+import com.example.bootcampWeek4.model.User
 import com.example.bootcampWeek4.response.LoginResponse
 import com.example.bootcampWeek4.service.ServiceConnector
 import com.example.bootcampWeek4.utils.USER_TOKEN
@@ -44,9 +46,20 @@ class LoginFragment : Fragment() {
             .enqueue(object : BaseCallBack<LoginResponse>() {
                 override fun onSuccess(data: LoginResponse) {
                     super.onSuccess(data)
+                    User.getCurrentInstance().token = data.token
+                    saveToken(data.token)
                     saveDataAsString(USER_TOKEN, data.token)
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
             })
     }
+
+    private fun saveToken(token: String){
+        val sharedPreferences = this.activity?.getSharedPreferences("MySharedPreferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences?.edit()
+        editor?.apply {
+            putString(USER_TOKEN, token)
+        }?.apply()
+    }
+
 }

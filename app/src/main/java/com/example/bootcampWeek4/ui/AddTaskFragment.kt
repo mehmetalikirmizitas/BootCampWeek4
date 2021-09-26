@@ -1,4 +1,4 @@
-package com.example.bootcampWeek4.ui.addTask
+package com.example.bootcampWeek4.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +20,6 @@ class AddTaskFragment : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetBinding? = null
     private val binding get() = _binding!!
-    private var addListener : IAddTask? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,9 +53,6 @@ class AddTaskFragment : BottomSheetDialogFragment() {
                     findNavController().navigate(R.id.action_homeFragment_self)
                 }
             })
-    }
-    fun addListener(listener: IAddTask?){
-        this.addListener = listener
     }
 
     override fun onDestroyView() {
